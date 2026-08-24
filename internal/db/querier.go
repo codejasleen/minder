@@ -28,6 +28,7 @@ type Querier interface {
 	CountProfilesByName(ctx context.Context, name string) (int64, error)
 	CountProfilesByProjectID(ctx context.Context, projectID uuid.UUID) (int64, error)
 	CountUsers(ctx context.Context) (int64, error)
+	CreateAcceptedRisk(ctx context.Context, arg CreateAcceptedRiskParams) (AcceptedRisk, error)
 	// CreateDataSource creates a new datasource in a given project.
 	CreateDataSource(ctx context.Context, arg CreateDataSourceParams) (DataSource, error)
 	CreateEntitlements(ctx context.Context, arg CreateEntitlementsParams) error
@@ -54,6 +55,7 @@ type Querier interface {
 	// Subscriptions --
 	CreateSubscription(ctx context.Context, arg CreateSubscriptionParams) (Subscription, error)
 	CreateUser(ctx context.Context, identitySubject string) (User, error)
+	DeleteAcceptedRisk(ctx context.Context, arg DeleteAcceptedRiskParams) error
 	DeleteAllPropertiesForEntity(ctx context.Context, entityID uuid.UUID) error
 	DeleteDataSource(ctx context.Context, arg DeleteDataSourceParams) (DataSource, error)
 	DeleteDataSourceFunction(ctx context.Context, arg DeleteDataSourceFunctionParams) (DataSourcesFunction, error)
@@ -64,6 +66,7 @@ type Querier interface {
 	DeleteEntity(ctx context.Context, arg DeleteEntityParams) error
 	DeleteEvaluationHistoryByIDs(ctx context.Context, evaluationids []uuid.UUID) (int64, error)
 	DeleteEvaluationOutputsByEvaluationIDs(ctx context.Context, evaluationids []uuid.UUID) (int64, error)
+	DeleteExpiredAcceptedRisk(ctx context.Context, arg DeleteExpiredAcceptedRiskParams) error
 	DeleteExpiredSessionStates(ctx context.Context) (int64, error)
 	DeleteInstallationIDByAppID(ctx context.Context, appInstallationID int64) error
 	// DeleteInvitation deletes an invitation by its code. This is intended to be
@@ -95,6 +98,7 @@ type Querier interface {
 	GetAccessTokenByProjectID(ctx context.Context, arg GetAccessTokenByProjectIDParams) (ProviderAccessToken, error)
 	GetAccessTokenByProvider(ctx context.Context, provider string) ([]ProviderAccessToken, error)
 	GetAccessTokenSinceDate(ctx context.Context, arg GetAccessTokenSinceDateParams) (ProviderAccessToken, error)
+	GetActiveAcceptedRisk(ctx context.Context, arg GetActiveAcceptedRiskParams) (AcceptedRisk, error)
 	GetAllPropertiesForEntity(ctx context.Context, entityID uuid.UUID) ([]Property, error)
 	GetBundle(ctx context.Context, arg GetBundleParams) (Bundle, error)
 	GetChildrenProjects(ctx context.Context, id uuid.UUID) ([]GetChildrenProjectsRow, error)
@@ -198,6 +202,7 @@ type Querier interface {
 	InsertEvaluationRuleEntity(ctx context.Context, arg InsertEvaluationRuleEntityParams) (uuid.UUID, error)
 	InsertEvaluationStatus(ctx context.Context, arg InsertEvaluationStatusParams) (uuid.UUID, error)
 	InsertRemediationEvent(ctx context.Context, arg InsertRemediationEventParams) error
+	ListAcceptedRisksByProjectID(ctx context.Context, projectID uuid.UUID) ([]AcceptedRisk, error)
 	ListAllRootProjects(ctx context.Context) ([]Project, error)
 	// ListDataSourceFunctions retrieves all functions for a datasource.
 	ListDataSourceFunctions(ctx context.Context, arg ListDataSourceFunctionsParams) ([]DataSourcesFunction, error)

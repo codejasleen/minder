@@ -68,6 +68,9 @@ enum Relation {
     RELATION_ENTITY_REGISTER = 43 [(name) = "entity_register"];
     RELATION_ENTITY_UPDATE = 44 [(name) = "entity_update"];
     RELATION_ENTITY_DELETE = 45 [(name) = "entity_delete"];
+    RELATION_ACCEPTED_RISK_GET = 46 [(name) = "accepted_risk_get"];
+    RELATION_ACCEPTED_RISK_CREATE = 47 [(name) = "accepted_risk_create"];
+    RELATION_ACCEPTED_RISK_DELETE = 48 [(name) = "accepted_risk_delete"];
 }
 
 extend google.protobuf.EnumValueOptions {
@@ -729,6 +732,42 @@ service DataSourceService {
         option (rpc_options) = {
             target_resource: TARGET_RESOURCE_PROJECT
             relation: RELATION_DATA_SOURCE_DELETE
+        };
+    }
+}
+
+service AcceptedRiskService {
+    rpc CreateAcceptedRisk (CreateAcceptedRiskRequest) returns (CreateAcceptedRiskResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/accepted_risk"
+            body: "*"
+        };
+
+        option (rpc_options) = {
+            target_resource: TARGET_RESOURCE_PROJECT
+            relation: RELATION_ACCEPTED_RISK_CREATE
+        };
+    }
+
+    rpc ListAcceptedRisks (ListAcceptedRisksRequest) returns (ListAcceptedRisksResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/accepted_risks"
+        };
+
+        option (rpc_options) = {
+            target_resource: TARGET_RESOURCE_PROJECT
+            relation: RELATION_ACCEPTED_RISK_GET
+        };
+    }
+
+    rpc DeleteAcceptedRisk (DeleteAcceptedRiskRequest) returns (DeleteAcceptedRiskResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/accepted_risk/{id}"
+        };
+
+        option (rpc_options) = {
+            target_resource: TARGET_RESOURCE_PROJECT
+            relation: RELATION_ACCEPTED_RISK_DELETE
         };
     }
 }
@@ -4607,4 +4646,64 @@ message DataSourceReference {
         },
         (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
     ];
+}
+
+message AcceptedRisk {
+    string id = 1 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = OUTPUT_ONLY
+    ];
+
+    string entity_id = 2 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    string rule_type_id = 3 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    google.protobuf.Timestamp expires_at = 4 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    google.protobuf.Timestamp created_at = 5 [
+        (google.api.field_behavior) = OUTPUT_ONLY
+    ];
+}
+
+// AcceptedRisk service
+message CreateAcceptedRiskRequest {
+    AcceptedRisk accepted_risk = 1 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+message CreateAcceptedRiskResponse {
+    AcceptedRisk accepted_risk = 1 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+message ListAcceptedRisksRequest {
+    Context context = 1;
+}
+
+message ListAcceptedRisksResponse {
+    repeated AcceptedRisk accepted_risks = 1 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+message DeleteAcceptedRiskRequest {
+    Context context = 1;
+
+    string id = 2 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+message DeleteAcceptedRiskResponse {
 }

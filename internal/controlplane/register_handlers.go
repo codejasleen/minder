@@ -127,6 +127,9 @@ func RegisterGRPCServices(s *Server) {
 	// Register the DataSource service
 	pb.RegisterDataSourceServiceServer(s.grpcServer, s)
 
+	// Register the AcceptedRisk service
+	pb.RegisterAcceptedRiskServiceServer(s.grpcServer, s)
+
 	// Register the EntityInstance service
 	pb.RegisterEntityInstanceServiceServer(s.grpcServer, s)
 }

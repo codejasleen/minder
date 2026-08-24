@@ -27,6 +27,9 @@
       "name": "DataSourceService"
     },
     {
+      "name": "AcceptedRiskService"
+    },
+    {
       "name": "RuleTypeService"
     },
     {
@@ -55,6 +58,114 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/accepted_risk": {
+      "post": {
+        "operationId": "AcceptedRiskService_CreateAcceptedRisk",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAcceptedRiskResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAcceptedRiskRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AcceptedRiskService"
+        ]
+      }
+    },
+    "/api/v1/accepted_risk/{id}": {
+      "delete": {
+        "operationId": "AcceptedRiskService_DeleteAcceptedRisk",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAcceptedRiskResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "context.provider",
+            "description": "name of the provider\nThis is optional, but some existing clients may set the field unconditionally,\nso an empty string is also an allowed value.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.project",
+            "description": "ID or name of the project.  If empty or unset, will select the user's default\nproject if they only have one project.  Existing clients may unconditionally set\nthis to the empty string rather than leaving this unset, so we allow \"\" as an\nalias for unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.retiredOrganization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AcceptedRiskService"
+        ]
+      }
+    },
+    "/api/v1/accepted_risks": {
+      "get": {
+        "operationId": "AcceptedRiskService_ListAcceptedRisks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListAcceptedRisksResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "context.provider",
+            "description": "name of the provider\nThis is optional, but some existing clients may set the field unconditionally,\nso an empty string is also an allowed value.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.project",
+            "description": "ID or name of the project.  If empty or unset, will select the user's default\nproject if they only have one project.  Existing clients may unconditionally set\nthis to the empty string rather than leaving this unset, so we allow \"\" as an\nalias for unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.retiredOrganization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AcceptedRiskService"
+        ]
+      }
+    },
     "/api/v1/artifact/name/{name}": {
       "get": {
         "operationId": "ArtifactService_GetArtifactByName",
@@ -3992,6 +4103,35 @@
       "default": "NULL_VALUE",
       "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
+    "v1AcceptedRisk": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "entityId": {
+          "type": "string"
+        },
+        "ruleTypeId": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "entityId",
+        "ruleTypeId",
+        "expiresAt"
+      ]
+    },
     "v1Artifact": {
       "type": "object",
       "properties": {
@@ -4164,6 +4304,29 @@
         }
       },
       "description": "ContextV2 defines the context in which a rule is evaluated."
+    },
+    "v1CreateAcceptedRiskRequest": {
+      "type": "object",
+      "properties": {
+        "acceptedRisk": {
+          "$ref": "#/definitions/v1AcceptedRisk"
+        }
+      },
+      "title": "AcceptedRisk service",
+      "required": [
+        "acceptedRisk"
+      ]
+    },
+    "v1CreateAcceptedRiskResponse": {
+      "type": "object",
+      "properties": {
+        "acceptedRisk": {
+          "$ref": "#/definitions/v1AcceptedRisk"
+        }
+      },
+      "required": [
+        "acceptedRisk"
+      ]
     },
     "v1CreateDataSourceRequest": {
       "type": "object",
@@ -4448,6 +4611,9 @@
         }
       },
       "description": "DataSourceReference is a reference to a data source.\nNote that for a resource to refer to a data source the data source must\nbe available in the same project hierarchy."
+    },
+    "v1DeleteAcceptedRiskResponse": {
+      "type": "object"
     },
     "v1DeleteDataSourceByIdResponse": {
       "type": "object",
@@ -5217,6 +5383,21 @@
       "required": [
         "role",
         "project"
+      ]
+    },
+    "v1ListAcceptedRisksResponse": {
+      "type": "object",
+      "properties": {
+        "acceptedRisks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AcceptedRisk"
+          }
+        }
+      },
+      "required": [
+        "acceptedRisks"
       ]
     },
     "v1ListArtifactsResponse": {

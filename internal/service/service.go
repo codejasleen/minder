@@ -12,6 +12,7 @@ import (
 	"github.com/open-feature/go-sdk/openfeature"
 	"golang.org/x/sync/errgroup"
 
+	acceptedriskssvc "github.com/mindersec/minder/internal/acceptedrisks/service"
 	"github.com/mindersec/minder/internal/auth"
 	"github.com/mindersec/minder/internal/auth/jwt"
 	"github.com/mindersec/minder/internal/authz"
@@ -102,15 +103,16 @@ func AllInOneServerService(
 	profileSvc := profiles.NewProfileService(evt, selChecker)
 	ruleSvc := ruletypes.NewRuleTypeService(featureFlagClient)
 	roleScv := roles.NewRoleService()
-	restMaxResponseBytes, err := cfg.DataSources.REST.GetMaxResponseBytes()
-	if err != nil {
-		return fmt.Errorf("invalid REST data source configuration: %w", err)
-	}
-	dataSourcesSvc := datasourcessvc.NewDataSourceService(
-		store,
-		v1datasources.WithRESTRequestTimeout(cfg.DataSources.REST.RequestTimeout),
-		v1datasources.WithRESTMaxResponseBytes(restMaxResponseBytes),
-	)
+    restMaxResponseBytes, err := cfg.DataSources.REST.GetMaxResponseBytes()
+    if err != nil {
+        return fmt.Errorf("invalid REST data source configuration: %w", err)
+    }
+    dataSourcesSvc := datasourcessvc.NewDataSourceService(
+        store,
+        v1datasources.WithRESTRequestTimeout(cfg.DataSources.REST.RequestTimeout),
+        v1datasources.WithRESTMaxResponseBytes(restMaxResponseBytes),
+        )
+    acceptedRisksSvc := acceptedriskssvc.NewAcceptedRisksService(store)
 	marketplace, err := marketplaces.NewMarketplaceFromServiceConfig(cfg.Marketplace, profileSvc, ruleSvc, dataSourcesSvc)
 	if err != nil {
 		return fmt.Errorf("failed to create marketplace: %w", err)
@@ -228,6 +230,7 @@ func AllInOneServerService(
 		historySvc,
 		ruleSvc,
 		dataSourcesSvc,
+		acceptedRisksSvc,
 		ghProviders,
 		providerManager,
 		providerAuthManager,

@@ -222,6 +222,21 @@ func (mr *MockStoreMockRecorder) CountUsers(ctx any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountUsers", reflect.TypeOf((*MockStore)(nil).CountUsers), ctx)
 }
 
+// CreateAcceptedRisk mocks base method.
+func (m *MockStore) CreateAcceptedRisk(ctx context.Context, arg db.CreateAcceptedRiskParams) (db.AcceptedRisk, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateAcceptedRisk", ctx, arg)
+	ret0, _ := ret[0].(db.AcceptedRisk)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAcceptedRisk indicates an expected call of CreateAcceptedRisk.
+func (mr *MockStoreMockRecorder) CreateAcceptedRisk(ctx, arg any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAcceptedRisk", reflect.TypeOf((*MockStore)(nil).CreateAcceptedRisk), ctx, arg)
+}
+
 // CreateDataSource mocks base method.
 func (m *MockStore) CreateDataSource(ctx context.Context, arg db.CreateDataSourceParams) (db.DataSource, error) {
 	m.ctrl.T.Helper()
@@ -461,6 +476,20 @@ func (mr *MockStoreMockRecorder) CreateUser(ctx, identitySubject any) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockStore)(nil).CreateUser), ctx, identitySubject)
 }
 
+// DeleteAcceptedRisk mocks base method.
+func (m *MockStore) DeleteAcceptedRisk(ctx context.Context, arg db.DeleteAcceptedRiskParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAcceptedRisk", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAcceptedRisk indicates an expected call of DeleteAcceptedRisk.
+func (mr *MockStoreMockRecorder) DeleteAcceptedRisk(ctx, arg any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAcceptedRisk", reflect.TypeOf((*MockStore)(nil).DeleteAcceptedRisk), ctx, arg)
+}
+
 // DeleteAllPropertiesForEntity mocks base method.
 func (m *MockStore) DeleteAllPropertiesForEntity(ctx context.Context, entityID uuid.UUID) error {
 	m.ctrl.T.Helper()
@@ -562,6 +591,20 @@ func (m *MockStore) DeleteEvaluationOutputsByEvaluationIDs(ctx context.Context, 
 func (mr *MockStoreMockRecorder) DeleteEvaluationOutputsByEvaluationIDs(ctx, evaluationids any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEvaluationOutputsByEvaluationIDs", reflect.TypeOf((*MockStore)(nil).DeleteEvaluationOutputsByEvaluationIDs), ctx, evaluationids)
+}
+
+// DeleteExpiredAcceptedRisk mocks base method.
+func (m *MockStore) DeleteExpiredAcceptedRisk(ctx context.Context, arg db.DeleteExpiredAcceptedRiskParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteExpiredAcceptedRisk", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteExpiredAcceptedRisk indicates an expected call of DeleteExpiredAcceptedRisk.
+func (mr *MockStoreMockRecorder) DeleteExpiredAcceptedRisk(ctx, arg any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteExpiredAcceptedRisk", reflect.TypeOf((*MockStore)(nil).DeleteExpiredAcceptedRisk), ctx, arg)
 }
 
 // DeleteExpiredSessionStates mocks base method.
@@ -909,6 +952,21 @@ func (m *MockStore) GetAccessTokenSinceDate(ctx context.Context, arg db.GetAcces
 func (mr *MockStoreMockRecorder) GetAccessTokenSinceDate(ctx, arg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessTokenSinceDate", reflect.TypeOf((*MockStore)(nil).GetAccessTokenSinceDate), ctx, arg)
+}
+
+// GetActiveAcceptedRisk mocks base method.
+func (m *MockStore) GetActiveAcceptedRisk(ctx context.Context, arg db.GetActiveAcceptedRiskParams) (db.AcceptedRisk, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetActiveAcceptedRisk", ctx, arg)
+	ret0, _ := ret[0].(db.AcceptedRisk)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetActiveAcceptedRisk indicates an expected call of GetActiveAcceptedRisk.
+func (mr *MockStoreMockRecorder) GetActiveAcceptedRisk(ctx, arg any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetActiveAcceptedRisk", reflect.TypeOf((*MockStore)(nil).GetActiveAcceptedRisk), ctx, arg)
 }
 
 // GetAllPropertiesForEntity mocks base method.
@@ -1866,6 +1924,21 @@ func (m *MockStore) InsertRemediationEvent(ctx context.Context, arg db.InsertRem
 func (mr *MockStoreMockRecorder) InsertRemediationEvent(ctx, arg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertRemediationEvent", reflect.TypeOf((*MockStore)(nil).InsertRemediationEvent), ctx, arg)
+}
+
+// ListAcceptedRisksByProjectID mocks base method.
+func (m *MockStore) ListAcceptedRisksByProjectID(ctx context.Context, projectID uuid.UUID) ([]db.AcceptedRisk, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListAcceptedRisksByProjectID", ctx, projectID)
+	ret0, _ := ret[0].([]db.AcceptedRisk)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAcceptedRisksByProjectID indicates an expected call of ListAcceptedRisksByProjectID.
+func (mr *MockStoreMockRecorder) ListAcceptedRisksByProjectID(ctx, projectID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAcceptedRisksByProjectID", reflect.TypeOf((*MockStore)(nil).ListAcceptedRisksByProjectID), ctx, projectID)
 }
 
 // ListAllRootProjects mocks base method.

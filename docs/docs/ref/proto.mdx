@@ -50,6 +50,18 @@ export const TypeLink = ({ children, type }) => {
 ### Services
 
 
+<Service id="minder-v1-AcceptedRiskService">AcceptedRiskService</Service>
+
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateAcceptedRisk | [CreateAcceptedRiskRequest](#minder-v1-CreateAcceptedRiskRequest) | [CreateAcceptedRiskResponse](#minder-v1-CreateAcceptedRiskResponse) |  |
+| ListAcceptedRisks | [ListAcceptedRisksRequest](#minder-v1-ListAcceptedRisksRequest) | [ListAcceptedRisksResponse](#minder-v1-ListAcceptedRisksResponse) |  |
+| DeleteAcceptedRisk | [DeleteAcceptedRiskRequest](#minder-v1-DeleteAcceptedRiskRequest) | [DeleteAcceptedRiskResponse](#minder-v1-DeleteAcceptedRiskResponse) |  |
+
+
+
 <Service id="minder-v1-ArtifactService">ArtifactService</Service>
 
 
@@ -252,6 +264,21 @@ manage Users CRUD
 ### Messages
 
 
+<Message id="minder-v1-AcceptedRisk">AcceptedRisk</Message>
+
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | <TypeLink type="string">string</TypeLink> |  |  |
+| entity_id | <TypeLink type="string">string</TypeLink> |  |  |
+| rule_type_id | <TypeLink type="string">string</TypeLink> |  |  |
+| expires_at | <TypeLink type="google-protobuf-Timestamp">google.protobuf.Timestamp</TypeLink> |  |  |
+| created_at | <TypeLink type="google-protobuf-Timestamp">google.protobuf.Timestamp</TypeLink> |  |  |
+
+
+
 <Message id="minder-v1-Artifact">Artifact</Message>
 
 
@@ -412,6 +439,28 @@ ContextV2 defines the context in which a rule is evaluated.
 | ----- | ---- | ----- | ----------- |
 | project_id | <TypeLink type="string">string</TypeLink> |  | project is the project ID or name. If empty or unset, will select the user's default project if they only have one project. |
 | provider | <TypeLink type="string">string</TypeLink> |  | name of the provider. Set to empty string when not applicable. |
+
+
+
+<Message id="minder-v1-CreateAcceptedRiskRequest">CreateAcceptedRiskRequest</Message>
+
+AcceptedRisk service
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| accepted_risk | <TypeLink type="minder-v1-AcceptedRisk">AcceptedRisk</TypeLink> |  |  |
+
+
+
+<Message id="minder-v1-CreateAcceptedRiskResponse">CreateAcceptedRiskResponse</Message>
+
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| accepted_risk | <TypeLink type="minder-v1-AcceptedRisk">AcceptedRisk</TypeLink> |  |  |
 
 
 
@@ -632,6 +681,24 @@ be available in the same project hierarchy.
 | ----- | ---- | ----- | ----------- |
 | name | <TypeLink type="string">string</TypeLink> |  | name is the name of the data source within the project hierarchy. |
 | alias | <TypeLink type="string">string</TypeLink> |  | alias is the alias used to refer to the data source in the rule definition. If left unset, it will default to the name of the data source. |
+
+
+
+<Message id="minder-v1-DeleteAcceptedRiskRequest">DeleteAcceptedRiskRequest</Message>
+
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| context | <TypeLink type="minder-v1-Context">Context</TypeLink> |  |  |
+| id | <TypeLink type="string">string</TypeLink> |  |  |
+
+
+
+<Message id="minder-v1-DeleteAcceptedRiskResponse">DeleteAcceptedRiskResponse</Message>
+
+
 
 
 
@@ -1676,6 +1743,28 @@ Invitation is an invitation to join a project. This is only used in responses.
 | project_display | <TypeLink type="string">string</TypeLink> |  | project_display is the display name of the project to which the user is invited. |
 | invite_url | <TypeLink type="string">string</TypeLink> |  | inviteURL is the URL that can be used to accept the invitation. |
 | email_skipped | <TypeLink type="bool">bool</TypeLink> |  | emailSkipped is true if the email was not sent to the invitee. |
+
+
+
+<Message id="minder-v1-ListAcceptedRisksRequest">ListAcceptedRisksRequest</Message>
+
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| context | <TypeLink type="minder-v1-Context">Context</TypeLink> |  |  |
+
+
+
+<Message id="minder-v1-ListAcceptedRisksResponse">ListAcceptedRisksResponse</Message>
+
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| accepted_risks | <TypeLink type="minder-v1-AcceptedRisk">AcceptedRisk</TypeLink> | repeated |  |
 
 
 
@@ -3446,6 +3535,9 @@ ProviderTrait is the type of the provider.
 | RELATION_ENTITY_REGISTER | 43 |  |
 | RELATION_ENTITY_UPDATE | 44 |  |
 | RELATION_ENTITY_DELETE | 45 |  |
+| RELATION_ACCEPTED_RISK_GET | 46 |  |
+| RELATION_ACCEPTED_RISK_CREATE | 47 |  |
+| RELATION_ACCEPTED_RISK_DELETE | 48 |  |
 
 
 

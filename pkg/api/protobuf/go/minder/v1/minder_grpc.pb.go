@@ -1965,6 +1965,184 @@ var DataSourceService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
+	AcceptedRiskService_CreateAcceptedRisk_FullMethodName = "/minder.v1.AcceptedRiskService/CreateAcceptedRisk"
+	AcceptedRiskService_ListAcceptedRisks_FullMethodName  = "/minder.v1.AcceptedRiskService/ListAcceptedRisks"
+	AcceptedRiskService_DeleteAcceptedRisk_FullMethodName = "/minder.v1.AcceptedRiskService/DeleteAcceptedRisk"
+)
+
+// AcceptedRiskServiceClient is the client API for AcceptedRiskService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type AcceptedRiskServiceClient interface {
+	CreateAcceptedRisk(ctx context.Context, in *CreateAcceptedRiskRequest, opts ...grpc.CallOption) (*CreateAcceptedRiskResponse, error)
+	ListAcceptedRisks(ctx context.Context, in *ListAcceptedRisksRequest, opts ...grpc.CallOption) (*ListAcceptedRisksResponse, error)
+	DeleteAcceptedRisk(ctx context.Context, in *DeleteAcceptedRiskRequest, opts ...grpc.CallOption) (*DeleteAcceptedRiskResponse, error)
+}
+
+type acceptedRiskServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewAcceptedRiskServiceClient(cc grpc.ClientConnInterface) AcceptedRiskServiceClient {
+	return &acceptedRiskServiceClient{cc}
+}
+
+func (c *acceptedRiskServiceClient) CreateAcceptedRisk(ctx context.Context, in *CreateAcceptedRiskRequest, opts ...grpc.CallOption) (*CreateAcceptedRiskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateAcceptedRiskResponse)
+	err := c.cc.Invoke(ctx, AcceptedRiskService_CreateAcceptedRisk_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *acceptedRiskServiceClient) ListAcceptedRisks(ctx context.Context, in *ListAcceptedRisksRequest, opts ...grpc.CallOption) (*ListAcceptedRisksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAcceptedRisksResponse)
+	err := c.cc.Invoke(ctx, AcceptedRiskService_ListAcceptedRisks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *acceptedRiskServiceClient) DeleteAcceptedRisk(ctx context.Context, in *DeleteAcceptedRiskRequest, opts ...grpc.CallOption) (*DeleteAcceptedRiskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteAcceptedRiskResponse)
+	err := c.cc.Invoke(ctx, AcceptedRiskService_DeleteAcceptedRisk_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AcceptedRiskServiceServer is the server API for AcceptedRiskService service.
+// All implementations must embed UnimplementedAcceptedRiskServiceServer
+// for forward compatibility.
+type AcceptedRiskServiceServer interface {
+	CreateAcceptedRisk(context.Context, *CreateAcceptedRiskRequest) (*CreateAcceptedRiskResponse, error)
+	ListAcceptedRisks(context.Context, *ListAcceptedRisksRequest) (*ListAcceptedRisksResponse, error)
+	DeleteAcceptedRisk(context.Context, *DeleteAcceptedRiskRequest) (*DeleteAcceptedRiskResponse, error)
+	mustEmbedUnimplementedAcceptedRiskServiceServer()
+}
+
+// UnimplementedAcceptedRiskServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedAcceptedRiskServiceServer struct{}
+
+func (UnimplementedAcceptedRiskServiceServer) CreateAcceptedRisk(context.Context, *CreateAcceptedRiskRequest) (*CreateAcceptedRiskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateAcceptedRisk not implemented")
+}
+func (UnimplementedAcceptedRiskServiceServer) ListAcceptedRisks(context.Context, *ListAcceptedRisksRequest) (*ListAcceptedRisksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAcceptedRisks not implemented")
+}
+func (UnimplementedAcceptedRiskServiceServer) DeleteAcceptedRisk(context.Context, *DeleteAcceptedRiskRequest) (*DeleteAcceptedRiskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteAcceptedRisk not implemented")
+}
+func (UnimplementedAcceptedRiskServiceServer) mustEmbedUnimplementedAcceptedRiskServiceServer() {}
+func (UnimplementedAcceptedRiskServiceServer) testEmbeddedByValue()                             {}
+
+// UnsafeAcceptedRiskServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AcceptedRiskServiceServer will
+// result in compilation errors.
+type UnsafeAcceptedRiskServiceServer interface {
+	mustEmbedUnimplementedAcceptedRiskServiceServer()
+}
+
+func RegisterAcceptedRiskServiceServer(s grpc.ServiceRegistrar, srv AcceptedRiskServiceServer) {
+	// If the following call panics, it indicates UnimplementedAcceptedRiskServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&AcceptedRiskService_ServiceDesc, srv)
+}
+
+func _AcceptedRiskService_CreateAcceptedRisk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAcceptedRiskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AcceptedRiskServiceServer).CreateAcceptedRisk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AcceptedRiskService_CreateAcceptedRisk_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AcceptedRiskServiceServer).CreateAcceptedRisk(ctx, req.(*CreateAcceptedRiskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AcceptedRiskService_ListAcceptedRisks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAcceptedRisksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AcceptedRiskServiceServer).ListAcceptedRisks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AcceptedRiskService_ListAcceptedRisks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AcceptedRiskServiceServer).ListAcceptedRisks(ctx, req.(*ListAcceptedRisksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AcceptedRiskService_DeleteAcceptedRisk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAcceptedRiskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AcceptedRiskServiceServer).DeleteAcceptedRisk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AcceptedRiskService_DeleteAcceptedRisk_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AcceptedRiskServiceServer).DeleteAcceptedRisk(ctx, req.(*DeleteAcceptedRiskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// AcceptedRiskService_ServiceDesc is the grpc.ServiceDesc for AcceptedRiskService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var AcceptedRiskService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "minder.v1.AcceptedRiskService",
+	HandlerType: (*AcceptedRiskServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateAcceptedRisk",
+			Handler:    _AcceptedRiskService_CreateAcceptedRisk_Handler,
+		},
+		{
+			MethodName: "ListAcceptedRisks",
+			Handler:    _AcceptedRiskService_ListAcceptedRisks_Handler,
+		},
+		{
+			MethodName: "DeleteAcceptedRisk",
+			Handler:    _AcceptedRiskService_DeleteAcceptedRisk_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "minder/v1/minder.proto",
+}
+
+const (
 	RuleTypeService_ListRuleTypes_FullMethodName     = "/minder.v1.RuleTypeService/ListRuleTypes"
 	RuleTypeService_GetRuleTypeByName_FullMethodName = "/minder.v1.RuleTypeService/GetRuleTypeByName"
 	RuleTypeService_GetRuleTypeById_FullMethodName   = "/minder.v1.RuleTypeService/GetRuleTypeById"

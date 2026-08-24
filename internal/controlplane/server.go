@@ -64,6 +64,7 @@ import (
 	reposvc "github.com/mindersec/minder/internal/repositories"
 	"github.com/mindersec/minder/internal/roles"
 	"github.com/mindersec/minder/internal/util"
+	acceptedriskssvc "github.com/mindersec/minder/internal/acceptedrisks/service"
 	pb "github.com/mindersec/minder/pkg/api/protobuf/go/minder/v1"
 	serverconfig "github.com/mindersec/minder/pkg/config/server"
 	"github.com/mindersec/minder/pkg/eventer/interfaces"
@@ -101,6 +102,7 @@ type Server struct {
 	invites             invites.InviteService
 	ruleTypes           ruletypes.RuleTypeService
 	dataSourcesService  datasourcessvc.DataSourcesService
+	acceptedRisksService acceptedriskssvc.AcceptedRisksService
 	repos               reposvc.RepositoryService
 	entityService       entitySvc.EntityService
 	entityCreator       entitySvc.EntityCreator
@@ -132,6 +134,7 @@ type Server struct {
 	pb.UnimplementedInviteServiceServer
 	pb.UnimplementedDataSourceServiceServer
 	pb.UnimplementedEntityInstanceServiceServer
+	pb.UnimplementedAcceptedRiskServiceServer
 }
 
 // NewServer creates a new server instance
@@ -152,6 +155,7 @@ func NewServer(
 	historyService history.EvaluationHistoryService,
 	ruleService ruletypes.RuleTypeService,
 	dataSourcesService datasourcessvc.DataSourcesService,
+	acceptedRisksService acceptedriskssvc.AcceptedRisksService,
 	ghProviders service.GitHubProviderService,
 	providerManager manager.ProviderManager,
 	providerAuthManager manager.AuthManager,
@@ -175,6 +179,7 @@ func NewServer(
 		history:             historyService,
 		ruleTypes:           ruleService,
 		dataSourcesService:  dataSourcesService,
+		acceptedRisksService: acceptedRisksService,
 		providerStore:       providerStore,
 		featureFlags:        featureFlagClient,
 		ghClient:            &ghprov.ClientServiceImplementation{},
