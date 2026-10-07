@@ -46,6 +46,9 @@
     },
     {
       "name": "EntityInstanceService"
+    },
+    {
+      "name": "ExceptionService"
     }
   ],
   "consumes": [
@@ -986,6 +989,115 @@
         ],
         "tags": [
           "EntityInstanceService"
+        ]
+      }
+    },
+    "/api/v1/exception": {
+      "post": {
+        "operationId": "ExceptionService_CreateException",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateExceptionResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "CreateExceptionRequest is the request message for the CreateException method.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateExceptionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ExceptionService"
+        ]
+      }
+    },
+    "/api/v1/exception/{id}": {
+      "delete": {
+        "operationId": "ExceptionService_DeleteException",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteExceptionResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "context.provider",
+            "description": "name of the provider\nThis is optional, but some existing clients may set the field unconditionally,\nso an empty string is also an allowed value.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.project",
+            "description": "ID or name of the project.  If empty or unset, will select the user's default\nproject if they only have one project.  Existing clients may unconditionally set\nthis to the empty string rather than leaving this unset, so we allow \"\" as an\nalias for unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.retiredOrganization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ExceptionService"
+        ]
+      }
+    },
+    "/api/v1/exceptions": {
+      "get": {
+        "operationId": "ExceptionService_ListExceptions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListExceptionsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "context.provider",
+            "description": "name of the provider\nThis is optional, but some existing clients may set the field unconditionally,\nso an empty string is also an allowed value.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.project",
+            "description": "ID or name of the project.  If empty or unset, will select the user's default\nproject if they only have one project.  Existing clients may unconditionally set\nthis to the empty string rather than leaving this unset, so we allow \"\" as an\nalias for unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "context.retiredOrganization",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ExceptionService"
         ]
       }
     },
@@ -4201,6 +4313,39 @@
     "v1CreateEntityReconciliationTaskResponse": {
       "type": "object"
     },
+    "v1CreateExceptionRequest": {
+      "type": "object",
+      "properties": {
+        "entityId": {
+          "type": "string"
+        },
+        "ruleTypeId": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "CreateExceptionRequest is the request message for the CreateException method.",
+      "required": [
+        "entityId",
+        "ruleTypeId",
+        "expiresAt"
+      ]
+    },
+    "v1CreateExceptionResponse": {
+      "type": "object",
+      "properties": {
+        "exception": {
+          "$ref": "#/definitions/v1Exception"
+        }
+      },
+      "description": "CreateExceptionResponse is the response message for the CreateException method.",
+      "required": [
+        "exception"
+      ]
+    },
     "v1CreateProfileRequest": {
       "type": "object",
       "properties": {
@@ -4477,6 +4622,10 @@
       "required": [
         "id"
       ]
+    },
+    "v1DeleteExceptionResponse": {
+      "type": "object",
+      "description": "DeleteExceptionResponse is the response message for the DeleteException method."
     },
     "v1DeleteProfileResponse": {
       "type": "object"
@@ -4808,6 +4957,40 @@
       "required": [
         "status",
         "details"
+      ]
+    },
+    "v1Exception": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id is the unique identifier of the exception."
+        },
+        "entity": {
+          "$ref": "#/definitions/v1EntityInstance",
+          "description": "entity is the entity for which the exception applies."
+        },
+        "ruleTypeId": {
+          "type": "string",
+          "description": "rule_type_id is the rule type for which the exception applies."
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "expires_at is when the exception stops being active."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "created_at is when the exception was created."
+        }
+      },
+      "description": "Exception represents an accepted risk for an entity and rule type.",
+      "required": [
+        "entity",
+        "ruleTypeId",
+        "expiresAt",
+        "createdAt"
       ]
     },
     "v1GetArtifactByIdResponse": {
@@ -5317,6 +5500,22 @@
       },
       "required": [
         "entities"
+      ]
+    },
+    "v1ListExceptionsResponse": {
+      "type": "object",
+      "properties": {
+        "exceptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Exception"
+          }
+        }
+      },
+      "description": "ListExceptionsResponse is the response message for the ListExceptions method.",
+      "required": [
+        "exceptions"
       ]
     },
     "v1ListInvitationsResponse": {

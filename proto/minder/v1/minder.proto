@@ -68,6 +68,9 @@ enum Relation {
     RELATION_ENTITY_REGISTER = 43 [(name) = "entity_register"];
     RELATION_ENTITY_UPDATE = 44 [(name) = "entity_update"];
     RELATION_ENTITY_DELETE = 45 [(name) = "entity_delete"];
+    RELATION_EXCEPTION_GET = 46 [(name) = "exception_get"];
+    RELATION_EXCEPTION_CREATE = 47 [(name) = "exception_create"];
+    RELATION_EXCEPTION_DELETE = 48 [(name) = "exception_delete"];
 }
 
 extend google.protobuf.EnumValueOptions {
@@ -4270,6 +4273,43 @@ service EntityInstanceService {
     }
 }
 
+// ExceptionService provides APIs for managing exceptions.
+service ExceptionService {
+    rpc ListExceptions (ListExceptionsRequest) returns (ListExceptionsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/exceptions"
+        };
+
+        option (rpc_options) = {
+            target_resource: TARGET_RESOURCE_PROJECT
+            relation: RELATION_EXCEPTION_GET
+        };
+    }
+
+    rpc CreateException (CreateExceptionRequest) returns (CreateExceptionResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/exception"
+            body: "*"
+        };
+
+        option (rpc_options) = {
+            target_resource: TARGET_RESOURCE_PROJECT
+            relation: RELATION_EXCEPTION_CREATE
+        };
+    }
+
+    rpc DeleteException (DeleteExceptionRequest) returns (DeleteExceptionResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/exception/{id}"
+        };
+
+        option (rpc_options) = {
+            target_resource: TARGET_RESOURCE_PROJECT
+            relation: RELATION_EXCEPTION_DELETE
+        };
+    }
+}
+
 // ListEntitiesRequest is the request message for the ListEntities method
 message ListEntitiesRequest {
     // context is the context in which the entities are listed
@@ -4607,4 +4647,83 @@ message DataSourceReference {
         },
         (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE
     ];
+}
+
+// Exception represents an accepted risk for an entity and rule type.
+message Exception {
+    // id is the unique identifier of the exception.
+    string id = 1 [
+        (buf.validate.field).string = {uuid: true}
+    ];
+
+    // entity is the entity for which the exception applies.
+    EntityInstance entity = 2 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    // rule_type_id is the rule type for which the exception applies.
+    string rule_type_id = 3 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    // expires_at is when the exception stops being active.
+    google.protobuf.Timestamp expires_at = 4 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    // created_at is when the exception was created.
+    google.protobuf.Timestamp created_at = 5 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+// ListExceptionsRequest is the request message for the ListExceptions method.
+message ListExceptionsRequest {
+    Context context = 1;
+}
+
+// ListExceptionsResponse is the response message for the ListExceptions method.
+message ListExceptionsResponse {
+    repeated Exception exceptions = 1 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+// CreateExceptionRequest is the request message for the CreateException method.
+message CreateExceptionRequest {
+    string entity_id = 1 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    string rule_type_id = 2 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+
+    google.protobuf.Timestamp expires_at = 3 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+// CreateExceptionResponse is the response message for the CreateException method.
+message CreateExceptionResponse {
+    Exception exception = 1 [
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+// DeleteExceptionRequest is the request message for the DeleteException method.
+message DeleteExceptionRequest {
+    Context context = 1;
+
+    string id = 2 [
+        (buf.validate.field).string = {uuid: true},
+        (google.api.field_behavior) = REQUIRED
+    ];
+}
+
+// DeleteExceptionResponse is the response message for the DeleteException method.
+message DeleteExceptionResponse {
 }
